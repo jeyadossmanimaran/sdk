@@ -3085,8 +3085,8 @@ class CodeGenerator extends GeneralizingAstVisitor
             l,
             l,
             _runtimeModule,
-            name,
             _extensionSymbolsModule,
+            name,
             name,
             _visit(rhs)
           ])
@@ -3379,8 +3379,8 @@ class CodeGenerator extends GeneralizingAstVisitor
             l,
             l,
             _runtimeModule,
-            memberName,
             _extensionSymbolsModule,
+            memberName,
             memberName,
             l
           ])
@@ -4788,8 +4788,8 @@ class CodeGenerator extends GeneralizingAstVisitor
             l,
             l,
             _runtimeModule,
-            memberName,
             _extensionSymbolsModule,
+            memberName,
             memberName,
             l,
             _visitList(args)
