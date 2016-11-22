@@ -832,17 +832,21 @@ abstract class _AstResynthesizeTestMixin
     }
 
     Source resolveRelativeUri(String relativeUri) {
+      print('resolveRelativeUri() resolving $relativeUri using ${context.sourceFactory.runtimeType}');
       Source resolvedSource =
           context.sourceFactory.resolveUri(librarySource, relativeUri);
       if (resolvedSource == null) {
         throw new StateError('Could not resolve $relativeUri in the context of '
             '$librarySource (${librarySource.runtimeType})');
       }
+      print('  resolved to $resolvedSource');
       return resolvedSource;
     }
 
     UnlinkedUnit getPart(String relativeUri) {
-      return _getUnlinkedUnit(resolveRelativeUri(relativeUri));
+      var resolved = resolveRelativeUri(relativeUri);
+      print('getPart($relativeUri) resolved to $resolved');
+      return _getUnlinkedUnit(resolved);
     }
 
     UnlinkedPublicNamespace getImport(String relativeUri) {

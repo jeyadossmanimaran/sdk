@@ -232,9 +232,11 @@ class SourceFactoryImpl implements SourceFactory {
       }
       containedUri =
           utils.resolveRelativeUri(containingSource.uri, containedUri);
+      print('_internalResolveUri: not absolute');
     }
 
     Uri actualUri = containedUri;
+    print('_internalResolveUri: actualUri = $actualUri');
 
     // Check .packages and update target and actual URIs as appropriate.
     if (_packages != null && containedUri.scheme == 'package') {
