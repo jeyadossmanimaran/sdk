@@ -267,6 +267,7 @@ class ResourceUriResolver extends UriResolver {
       return null;
     }
     String path = _provider.pathContext.fromUri(uri);
+    print('_provider.pathContext.fromUri returned: "$path"');
     Resource resource = _provider.getResource(path);
     if (resource is File) {
       return resource.createSource(actualUri ?? uri);
