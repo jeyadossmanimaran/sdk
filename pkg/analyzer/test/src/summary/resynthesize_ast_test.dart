@@ -28,6 +28,7 @@ import '../context/abstract_context.dart';
 import '../task/strong/inferred_type_test.dart';
 import 'resynthesize_common.dart';
 import 'summary_common.dart';
+import '/a.dart';
 
 main() {
   defineReflectiveSuite(() {
