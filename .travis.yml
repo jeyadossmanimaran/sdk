@@ -72,17 +72,13 @@ script:
   - if [[ "$TEST" == node ]]; then ./tool/node_test.sh ; fi
   - if [[ "$TEST" == package ]]; then ./tool/build_sdk.sh && ./tool/build_pkgs.dart ; fi
 env:
-  - ANALYZER=master
-  - ANALYZER=master DDC_BROWSERS=Firefox
-  - ANALYZER=master DDC_BROWSERS=ChromeCanaryTravis
-  - ANALYZER=master CXX=g++
-  - ANALYZER=master CXX=clang++
+  - ANALYZER=master DDC_BROWSERS=ChromeTravis:ChromeCanaryTravis:Firefox
+  - ANALYZER=master CXX=clang++ DDC_BROWSERS=ChromeTravis:ChromeCanaryTravis:Firefox
   - TEST=coverage
   - TEST=package
 matrix:
   allow_failures:
     - env: ANALYZER=master CXX=g++
-    - env: ANALYZER=master DDC_BROWSERS=ChromeCanaryTravis
 notifications:
   email:
     recipients:
