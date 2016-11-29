@@ -107,7 +107,8 @@ AnalysisContextImpl createAnalysisContext() {
   var res = AnalysisEngine.instance.createAnalysisContext();
   res.analysisOptions = new AnalysisOptionsImpl()
     ..strongMode = true
-    ..trackCacheDependencies = false;
+    ..trackCacheDependencies = false
+    ..enableInitializingFormalAccess = true;
   return res;
 }
 

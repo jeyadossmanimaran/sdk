@@ -13216,6 +13216,10 @@ _js_mirrors._defaultConstructorType = function(type) {
   return _js_mirrors._dart.definiteFunctionType(type, []);
 };
 dart.fn(_js_mirrors._defaultConstructorType, dynamicTodynamic());
+_js_mirrors._getMixins = function(type) {
+  return _js_mirrors._dart.getMixins(type, []);
+};
+dart.fn(_js_mirrors._getMixins, dynamicTodynamic());
 _js_mirrors._Lazy$ = dart.generic(T => {
   const _Lazy = dart.typedef('_Lazy', () => dart.functionType(T, []));
   return _Lazy;
@@ -13506,6 +13510,7 @@ const _cls = Symbol('_cls');
 let const;
 const _declarations = Symbol('_declarations');
 const _raw = Symbol('_raw');
+const _mixin = Symbol('_mixin');
 const _typeArguments = Symbol('_typeArguments');
 let const;
 _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
@@ -13591,7 +13596,7 @@ _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
     this[_cls] = cls;
     this[_raw] = _js_mirrors._getGenericClass(_js_mirrors._unwrap(cls));
     this.simpleName = core.Symbol.new(_js_mirrors._unwrap(cls).name);
-    this.mixin = null;
+    this[_mixin] = null;
     this[_typeArguments] = null;
     this[_metadata] = null;
     this[_declarations] = null;
@@ -13662,6 +13667,21 @@ _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
       return mirrors.ClassMirror._check(_js_mirrors.reflectType(core.Type._check(_js_mirrors._wrap(_js_mirrors._unwrap(this[_cls]).__proto__))));
     }
   }
+  get mixin() {
+    if (this[_mixin] != null) {
+      return this[_mixin];
+    }
+    let mixins = _js_mirrors._getMixins(_js_mirrors._unwrap(this[_cls]));
+    if (mixins == null || dart.equals(dart.dload(mixins, 'length'), 0)) {
+      this[_mixin] = this;
+      return this[_mixin];
+    }
+    if (dart.test(dart.dsend(dart.dload(mixins, 'length'), '>', 1))) {
+      dart.throw(new core.UnsupportedError(dart.str`ClassMirror.mixin not yet supported for types with multiple mixins (${this[_cls]})`));
+    }
+    this[_mixin] = mirrors.ClassMirror._check(_js_mirrors.reflectType(core.Type._check(_js_mirrors._wrap(dart.dindex(mixins, 0)))));
+    return this[_mixin];
+  }
   toString() {
     return dart.str`ClassMirror on '${this[_cls]}'`;
   }
@@ -13710,7 +13730,7 @@ dart.setSignature(_js_mirrors.JsClassMirror, {
     [_cls]: core.Type,
     simpleName: core.Symbol,
     [_raw]: dart.dynamic,
-    mixin: mirrors.ClassMirror,
+    [_mixin]: mirrors.ClassMirror,
     [_typeArguments]: ListOfTypeMirror(),
     [_metadata]: ListOfInstanceMirror(),
     [_declarations]: MapOfSymbol$DeclarationMirror()
@@ -13724,7 +13744,8 @@ dart.setSignature(_js_mirrors.JsClassMirror, {
     isOriginalDeclaration: dart.definiteFunctionType(core.bool, []),
     typeArguments: dart.definiteFunctionType(core.List$(mirrors.TypeMirror), []),
     originalDeclaration: dart.definiteFunctionType(mirrors.TypeMirror, []),
-    superclass: dart.definiteFunctionType(mirrors.ClassMirror, [])
+    superclass: dart.definiteFunctionType(mirrors.ClassMirror, []),
+    mixin: dart.definiteFunctionType(mirrors.ClassMirror, [])
   }),
   methods: () => ({
     newInstance: dart.definiteFunctionType(mirrors.InstanceMirror, [core.Symbol, core.List], [MapOfSymbol$dynamic()]),

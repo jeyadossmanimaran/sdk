@@ -71,6 +71,10 @@ dynamic _defaultConstructorType(type) {
   return JS('', '#.definiteFunctionType(#, [])', _dart, type);
 }
 
+dynamic _getMixins(type) {
+  return JS('', '#.getMixins(#, [])', _dart, type);
+}
+
 typedef T _Lazy<T>();
 
 String _getNameForESSymbol(member) {
@@ -275,7 +279,7 @@ class JsClassMirror extends JsMirror implements ClassMirror {
   final dynamic _raw;
 
   // TODO(vsm): Do this properly
-  final ClassMirror mixin = null;
+  ClassMirror _mixin = null;
   List<TypeMirror> _typeArguments;
 
   List<InstanceMirror> _metadata;
@@ -453,6 +457,22 @@ class JsClassMirror extends JsMirror implements ClassMirror {
     } else {
       return reflectType(_wrap(JS('Type', '#.__proto__', _unwrap(_cls))));
     }
+  }
+
+  ClassMirror get mixin {
+    if (_mixin != null) {
+      return _mixin;
+    }
+    var mixins = _getMixins(_unwrap(_cls));
+    if (mixins == null || mixins.length == 0) {
+      _mixin = this;
+      return _mixin;
+    }
+    if (mixins.length > 1) {
+      throw new UnsupportedError("ClassMirror.mixin not yet supported for types with multiple mixins ($_cls)");
+    }
+    _mixin = reflectType(_wrap(mixins[0]));
+    return _mixin;
   }
 
   String toString() => "ClassMirror on '$_cls'";
