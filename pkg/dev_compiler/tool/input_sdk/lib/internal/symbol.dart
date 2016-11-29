@@ -15,6 +15,9 @@ part of dart._internal;
 class Symbol implements core.Symbol {
   final String _name;
 
+  // Used internally by DDC to map ES6 symbols to Dart.
+  final dynamic _nativeSymbol;
+
   /**
    * Source of RegExp matching Dart reserved words.
    *
@@ -99,18 +102,21 @@ class Symbol implements core.Symbol {
       '^(?:$operatorRE\$|$identifierRE(?:=?\$|[.](?!\$)))+?\$');
 
   external const Symbol(String name);
+  
+  external const Symbol.es6(String name, nativeSymbol);
 
   /**
    * Platform-private method used by the mirror system to create
    * otherwise invalid names.
    */
-  const Symbol.unvalidated(this._name);
+  const Symbol.unvalidated(this._name) : this._nativeSymbol = null;
 
   // This is called by dart2js.
   Symbol.validated(String name)
-      : this._name = validatePublicSymbol(name);
+      : this._name = validatePublicSymbol(name), this._nativeSymbol = null;
 
-  bool operator ==(Object other) => other is Symbol && _name == other._name;
+  bool operator ==(Object other) => other is Symbol && _name == other._name
+    && _nativeSymbol == other._nativeSymbol;
 
   external int get hashCode;
 
@@ -118,6 +124,8 @@ class Symbol implements core.Symbol {
 
   /// Platform-private accessor which cannot be called from user libraries.
   static String getName(Symbol symbol) => symbol._name;
+
+  static dynamic getNativeSymbol(Symbol symbol) => symbol._nativeSymbol;
 
   static String validatePublicSymbol(String name) {
     if (name.isEmpty || publicSymbolPattern.hasMatch(name)) return name;
