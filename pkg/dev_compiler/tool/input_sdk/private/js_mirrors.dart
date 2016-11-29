@@ -469,7 +469,8 @@ class JsClassMirror extends JsMirror implements ClassMirror {
       return _mixin;
     }
     if (mixins.length > 1) {
-      throw new UnsupportedError("ClassMirror.mixin not yet supported for types with multiple mixins ($_cls)");
+      throw new UnsupportedError("ClassMirror.mixin not yet supported for "
+        "classes ($_cls) with multiple mixins");
     }
     _mixin = reflectType(_wrap(mixins[0]));
     return _mixin;
