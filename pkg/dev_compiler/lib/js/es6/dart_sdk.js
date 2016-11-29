@@ -13573,39 +13573,38 @@ _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
       let constructors = _js_mirrors._getConstructors(unwrapped);
       constructors[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._constructor(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._constructor(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       if (dart.test(constructors[dartx.isEmpty])) {
         let name = 'new';
         let ft = _js_mirrors._defaultConstructorType(_js_mirrors._unwrap(this[_cls]));
         let symbol = core.Symbol.new(name);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._constructor(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._constructor(this, symbol, ft));
       }
       let fields = _js_mirrors._getFields(unwrapped);
       fields[dartx.forEach](dart.fn((symbol, t) => {
-        let name = _js_mirrors.getName(symbol);
         let metadata = [];
         if (core.List.is(t)) {
           metadata = core.List._check(dart.dsend(dart.dsend(t, 'skip', 1), 'toList'));
           t = dart.dindex(t, 0);
         }
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsVariableMirror._(name, core.Type._check(_js_mirrors._wrap(t)), metadata));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsVariableMirror._(symbol, core.Type._check(_js_mirrors._wrap(t)), metadata));
       }, SymbolAnddynamicTovoid()));
       let methods = _js_mirrors._getMethods(unwrapped);
       methods[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       let getters = _js_mirrors._getGetters(unwrapped);
       getters[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       let setters = _js_mirrors._getSetters(unwrapped);
       setters[dartx.forEach](dart.fn((symbol, ft) => {
         let name = dart.notNull(_js_mirrors.getName(symbol)) + '=';
         symbol = new _internal.Symbol.es6(name, _js_mirrors._getESSymbol(symbol));
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._instanceMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       let staticFields = _js_mirrors._getStaticFields(unwrapped);
       staticFields[dartx.forEach](dart.fn((symbol, t) => {
@@ -13615,22 +13614,22 @@ _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
           metadata = core.List._check(dart.dsend(dart.dsend(t, 'skip', 1), 'toList'));
           t = dart.dindex(t, 0);
         }
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsVariableMirror._(name, core.Type._check(_js_mirrors._wrap(t)), metadata));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsVariableMirror._(symbol, core.Type._check(_js_mirrors._wrap(t)), metadata));
       }, SymbolAnddynamicTovoid()));
       let statics = _js_mirrors._getStatics(unwrapped);
       statics[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       let staticGetters = _js_mirrors._getStaticGetters(unwrapped);
       staticGetters[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       let staticSetters = _js_mirrors._getStaticSetters(unwrapped);
       staticSetters[dartx.forEach](dart.fn((symbol, ft) => {
         let name = _js_mirrors.getName(symbol);
-        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, name, ft));
+        this[_declarations][dartx._set](symbol, new _js_mirrors.JsMethodMirror._staticMethod(this, symbol, ft));
       }, SymbolAnddynamicTovoid()));
       this[_declarations] = MapOfSymbol$DeclarationMirror().unmodifiable(this[_declarations]);
     }
@@ -13653,23 +13652,23 @@ _js_mirrors.JsClassMirror = class JsClassMirror extends _js_mirrors.JsMirror {
   }
   newInstance(constructorName, args, namedArgs) {
     if (namedArgs === void 0) namedArgs = null;
-    let name = _js_mirrors._getMember(constructorName);
+    let name = _js_mirrors.getName(constructorName);
     dart.assert(namedArgs == null || dart.test(namedArgs[dartx.isEmpty]));
-    let instance = dart.equals(name, 'new') || dart.equals(name, '') ? new (_js_mirrors._unwrap(this[_cls]))(...args) : new (_js_mirrors._unwrap(this[_cls]))[name](...args);
+    let instance = name == 'new' || name == '' ? new (_js_mirrors._unwrap(this[_cls]))(...args) : new (_js_mirrors._unwrap(this[_cls]))[name](...args);
     return _js_mirrors.reflect(instance);
   }
   getField(symbol) {
-    let name = _js_mirrors._getMember(symbol);
+    let name = _js_mirrors.getName(symbol);
     return _js_mirrors.reflect(_js_mirrors._unwrap(this[_cls])[name]);
   }
   setField(symbol, value) {
-    let name = _js_mirrors._getMember(symbol);
+    let name = _js_mirrors.getName(symbol);
     _js_mirrors._unwrap(this[_cls])[name] = value;
     return _js_mirrors.reflect(value);
   }
   invoke(symbol, args, namedArgs) {
     if (namedArgs === void 0) namedArgs = null;
-    let name = _js_mirrors._getMember(symbol);
+    let name = _js_mirrors.getName(symbol);
     if (namedArgs != null) {
       args = core.List.from(args);
       args[dartx.add](_js_mirrors._toJsMap(namedArgs));
@@ -13798,13 +13797,15 @@ dart.setSignature(_js_mirrors.JsClassMirror, {
     invoke: dart.definiteFunctionType(mirrors.InstanceMirror, [core.Symbol, core.List], [MapOfSymbol$dynamic()])
   })
 });
+const _symbol = Symbol('_symbol');
 const _name = Symbol('_name');
 _js_mirrors.JsVariableMirror = class JsVariableMirror extends _js_mirrors.JsMirror {
   get simpleName() {
-    return core.Symbol.new(this[_name]);
+    return this[_symbol];
   }
-  _(name, t, annotations) {
-    this[_name] = name;
+  _(symbol, t, annotations) {
+    this[_symbol] = symbol;
+    this[_name] = _js_mirrors.getName(symbol);
     this.type = _js_mirrors.reflectType(t);
     this.metadata = ListOfInstanceMirror().unmodifiable(annotations[dartx.map](mirrors.InstanceMirror)(dart.fn(a => _js_mirrors.reflect(a), dynamicToInstanceMirror())));
     this.isStatic = false;
@@ -13835,8 +13836,9 @@ _js_mirrors.JsVariableMirror = class JsVariableMirror extends _js_mirrors.JsMirr
 dart.defineNamedConstructor(_js_mirrors.JsVariableMirror, '_');
 _js_mirrors.JsVariableMirror[dart.implements] = () => [mirrors.VariableMirror];
 dart.setSignature(_js_mirrors.JsVariableMirror, {
-  constructors: () => ({_: dart.definiteFunctionType(_js_mirrors.JsVariableMirror, [core.String, core.Type, core.List])}),
+  constructors: () => ({_: dart.definiteFunctionType(_js_mirrors.JsVariableMirror, [core.Symbol, core.Type, core.List])}),
   fields: () => ({
+    [_symbol]: core.Symbol,
     [_name]: core.String,
     type: mirrors.TypeMirror,
     metadata: ListOfInstanceMirror(),
@@ -13846,8 +13848,8 @@ dart.setSignature(_js_mirrors.JsVariableMirror, {
   getters: () => ({simpleName: dart.definiteFunctionType(core.Symbol, [])})
 });
 _js_mirrors.JsParameterMirror = class JsParameterMirror extends _js_mirrors.JsVariableMirror {
-  _(name, t, annotations) {
-    super._(name, t, annotations);
+  _(member, t, annotations) {
+    super._(member, t, annotations);
   }
   toString() {
     return dart.str`ParameterMirror on '${this[_name]}'`;
@@ -13886,7 +13888,7 @@ _js_mirrors.JsParameterMirror = class JsParameterMirror extends _js_mirrors.JsVa
 dart.defineNamedConstructor(_js_mirrors.JsParameterMirror, '_');
 _js_mirrors.JsParameterMirror[dart.implements] = () => [mirrors.ParameterMirror];
 dart.setSignature(_js_mirrors.JsParameterMirror, {
-  constructors: () => ({_: dart.definiteFunctionType(_js_mirrors.JsParameterMirror, [core.String, core.Type, core.List])})
+  constructors: () => ({_: dart.definiteFunctionType(_js_mirrors.JsParameterMirror, [core.Symbol, core.Type, core.List])})
 });
 const _params = Symbol('_params');
 const _createParameterMirrorList = Symbol('_createParameterMirrorList');
@@ -13901,10 +13903,11 @@ _js_mirrors.JsMethodMirror = class JsMethodMirror extends _js_mirrors.JsMirror {
     return this[_name][dartx.startsWith]('_');
   }
   get simpleName() {
-    return core.Symbol.new(this[_name]);
+    return this[_symbol];
   }
-  _constructor(cls, name, ftype) {
-    this[_name] = name;
+  _constructor(cls, symbol, ftype) {
+    this[_symbol] = symbol;
+    this[_name] = _js_mirrors.getName(symbol);
     this.isConstructor = true;
     this.isStatic = false;
     this[_params] = null;
@@ -13912,8 +13915,9 @@ _js_mirrors.JsMethodMirror = class JsMethodMirror extends _js_mirrors.JsMirror {
     this.isFinal = false;
     this[_createParameterMirrorList](ftype);
   }
-  _instanceMethod(cls, name, ftype) {
-    this[_name] = name;
+  _instanceMethod(cls, symbol, ftype) {
+    this[_symbol] = symbol;
+    this[_name] = _js_mirrors.getName(symbol);
     this.isConstructor = false;
     this.isStatic = false;
     this[_params] = null;
@@ -13921,8 +13925,9 @@ _js_mirrors.JsMethodMirror = class JsMethodMirror extends _js_mirrors.JsMirror {
     this.isFinal = false;
     this[_createParameterMirrorList](ftype);
   }
-  _staticMethod(cls, name, ftype) {
-    this[_name] = name;
+  _staticMethod(cls, symbol, ftype) {
+    this[_symbol] = symbol;
+    this[_name] = _js_mirrors.getName(symbol);
     this.isConstructor = false;
     this.isStatic = true;
     this[_params] = null;
@@ -13931,7 +13936,7 @@ _js_mirrors.JsMethodMirror = class JsMethodMirror extends _js_mirrors.JsMirror {
     this[_createParameterMirrorList](ftype);
   }
   get constructorName() {
-    return dart.test(this.isConstructor) ? core.Symbol.new(this[_name]) : null;
+    return dart.test(this.isConstructor) ? this[_symbol] : null;
   }
   get parameters() {
     return this[_params];
@@ -13960,13 +13965,13 @@ _js_mirrors.JsMethodMirror = class JsMethodMirror extends _js_mirrors.JsMirror {
     for (let i = 0; i < dart.notNull(args[dartx.length]); ++i) {
       let type = args[dartx._get](i);
       let metadata = dart.dindex(dart.dload(ftype, 'metadata'), i);
-      let param = new _js_mirrors.JsParameterMirror._('', core.Type._check(_js_mirrors._wrap(type)), core.List._check(metadata));
+      let param = new _js_mirrors.JsParameterMirror._(core.Symbol.new(''), core.Type._check(_js_mirrors._wrap(type)), core.List._check(metadata));
       params[dartx._set](i, param);
     }
     for (let i = 0; i < dart.notNull(opts[dartx.length]); ++i) {
       let type = opts[dartx._get](i);
       let metadata = dart.dindex(dart.dload(ftype, 'metadata'), dart.notNull(args[dartx.length]) + i);
-      let param = new _js_mirrors.JsParameterMirror._('', core.Type._check(_js_mirrors._wrap(type)), core.List._check(metadata));
+      let param = new _js_mirrors.JsParameterMirror._(core.Symbol.new(''), core.Type._check(_js_mirrors._wrap(type)), core.List._check(metadata));
       params[dartx._set](i + dart.notNull(args[dartx.length]), param);
     }
     this[_params] = ListOfParameterMirror().unmodifiable(params);
@@ -14026,11 +14031,12 @@ dart.defineNamedConstructor(_js_mirrors.JsMethodMirror, '_staticMethod');
 _js_mirrors.JsMethodMirror[dart.implements] = () => [mirrors.MethodMirror];
 dart.setSignature(_js_mirrors.JsMethodMirror, {
   constructors: () => ({
-    _constructor: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.String, dart.dynamic]),
-    _instanceMethod: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.String, dart.dynamic]),
-    _staticMethod: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.String, dart.dynamic])
+    _constructor: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.Symbol, dart.dynamic]),
+    _instanceMethod: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.Symbol, dart.dynamic]),
+    _staticMethod: dart.definiteFunctionType(_js_mirrors.JsMethodMirror, [_js_mirrors.JsClassMirror, core.Symbol, dart.dynamic])
   }),
   fields: () => ({
+    [_symbol]: core.Symbol,
     [_name]: core.String,
     [_params]: ListOfParameterMirror(),
     [_metadata]: ListOfInstanceMirror(),

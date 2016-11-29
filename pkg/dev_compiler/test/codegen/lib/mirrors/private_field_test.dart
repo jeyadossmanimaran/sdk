@@ -12,6 +12,8 @@ import 'private_field_helper.dart';
 
 class Foo extends Bar {
   int _field = 42;
+
+  static int _staticField = 99;
 }
 
 var privateSymbol = #_field;
@@ -28,4 +30,7 @@ main() {
   m.setField(privateSymbol2, "world");
   Expect.equals("world", foo.field);
   Expect.equals("world", m.getField(publicSymbol).reflectee);
+
+  var type = reflectClass(Foo);
+  Expect.equals(99, type.getField(#_staticField).reflectee);
 }
