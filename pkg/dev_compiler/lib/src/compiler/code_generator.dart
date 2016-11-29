@@ -5189,12 +5189,11 @@ class CodeGenerator extends GeneralizingAstVisitor
       var name = js.string(node.components.join('.'), "'");
       if (last.startsWith('_')) {
         var nativeSymbol = _emitPrivateNameSymbol(currentLibrary, last);
-        return js
-          .call('new #.es6(#, #)', [_emitConstructorAccess(symbolClass.type), name,
-            nativeSymbol]);
+        return js.call('new #.es6(#, #)',
+            [_emitConstructorAccess(symbolClass.type), name, nativeSymbol]);
       } else {
-      return js
-          .call('#.new(#)', [_emitConstructorAccess(types.symbolType), name]);
+        return js
+            .call('#.new(#)', [_emitConstructorAccess(types.symbolType), name]);
       }
     }
 
